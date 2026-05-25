@@ -181,7 +181,7 @@
 <body>
 
   <video id="bg-video" loop playsinline preload="auto">
-    <source src="./videoplayback.mp4" type="video/mp4">
+    <source src="https://disk.yandex.ru/i/JBGeBLcrch0emw/download" type="video/mp4">
     Ваш браузер не поддерживает видео.
   </video>
 
@@ -200,7 +200,6 @@
           src="https://tanki.su/static/5.141.2_85008e/common/img/og_img.png" 
           alt="Мир Танков" 
           class="tank-image"
-          onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%22300%22%3E%3Crect fill=%22%23333%22 width=%22600%22 height=%22300%22/%3E%3Ctext x=%22300%22 y=%22155%22 fill=%22%23ccc%22 text-anchor=%22middle%22%3EКартинка загружается...%3C/text%3E%3C/svg%3E';"
         >
         <div class="overlay-signature">KIENKO_9 Подставушник</div>
       </div>
@@ -215,30 +214,30 @@
       const overlay = document.getElementById('overlay-dark');
       const content = document.getElementById('dynamicContent');
       
-      // Показываем видео
       video.classList.add('active');
       overlay.classList.add('active');
       
-      // Включаем звук
       video.muted = false;
       video.volume = 1.0;
       
-      // Запускаем видео
+      video.load();
+      
       const playPromise = video.play();
       
       if (playPromise !== undefined) {
         playPromise.then(() => {
           console.log('✅ Видео играет со звуком!');
         }).catch(error => {
-          console.log('⚠️ Автовоспроизведение заблокировано. Видео на паузе.');
+          console.log('⚠️ Пробуем ещё раз...');
+          setTimeout(() => {
+            video.play().catch(e => console.log('Требуется взаимодействие'));
+          }, 500);
         });
       }
       
-      // Показываем контент
       content.classList.remove('hidden-content');
       content.classList.add('visible-content');
       
-      // Прокрутка
       setTimeout(() => {
         content.scrollIntoView({ behavior: 'smooth' });
       }, 200);
