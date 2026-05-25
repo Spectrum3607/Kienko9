@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, maximum-scale=2.0, minimum-scale=0.5">
+  <title>Мир Танков · KIENKO_9</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #0a0f1a;
+      font-family: 'Segoe UI', 'Arial', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0;
+      padding: 20px;
+      background-image: radial-gradient(circle at 20% 30%, #1c2a3a 5%, #0a0f1a 90%);
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: repeating-linear-gradient(45deg, rgba(90, 110, 70, 0.08) 0px, rgba(90, 110, 70, 0.08) 2px, 
+                  rgba(70, 80, 50, 0.05) 2px, rgba(70, 80, 50, 0.05) 8px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .site-container {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      max-width: 900px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .wot-header {
+      text-align: center;
+      margin-bottom: 30px;
+      filter: drop-shadow(0 8px 12px rgba(0,0,0,0.7));
+    }
+
+    .wot-title {
+      font-size: clamp(2.8rem, 10vw, 5rem);
+      font-weight: 900;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      background: linear-gradient(180deg, #f5e7c6 0%, #c9a45b 50%, #8b6914 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: 0 0 15px rgba(201, 164, 91, 0.5);
+      margin-bottom: 5px;
+      line-height: 1.1;
+    }
+
+    .wot-subtitle {
+      font-size: clamp(1.4rem, 4vw, 2.2rem);
+      font-weight: 800;
+      color: #e0d7b0;
+      letter-spacing: 8px;
+      text-transform: uppercase;
+      background: rgba(0,0,0,0.55);
+      display: inline-block;
+      padding: 0.3rem 2.2rem;
+      border-radius: 6px;
+      backdrop-filter: blur(3px);
+      border: 1px solid rgba(220, 180, 80, 0.6);
+      text-shadow: 0 0 10px black;
+      margin-top: 4px;
+    }
+
+    .center-play-area {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 15px 0 20px;
+      background: rgba(0, 0, 0, 0.35);
+      backdrop-filter: blur(12px);
+      border-radius: 60px;
+      padding: 30px 50px;
+      border: 2px solid rgba(220, 180, 80, 0.5);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.7), inset 0 0 30px rgba(255,200,50,0.2);
+      transition: all 0.3s ease;
+    }
+
+    .center-play-area:hover {
+      border-color: rgba(255, 200, 70, 0.9);
+      box-shadow: 0 25px 50px rgba(0,0,0,0.8), inset 0 0 40px rgba(255, 180, 20, 0.4);
+    }
+
+    .play-button {
+      background: radial-gradient(circle at 30% 30%, #e6b422, #b87c0a);
+      border: none;
+      color: #0a0a0a;
+      font-size: clamp(2.5rem, 8vw, 4.5rem);
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 8px;
+      padding: 20px 70px;
+      border-radius: 60px;
+      cursor: pointer;
+      box-shadow: 0 10px 0 #5c3a04, 0 15px 30px rgba(0,0,0,0.6), 0 0 30px #ffb703;
+      transition: all 0.08s ease;
+      text-shadow: 2px 2px 0 rgba(0,0,0,0.3);
+      position: relative;
+      border: 2px solid #ffd966;
+      font-family: 'Arial Black', 'Impact', sans-serif;
+      line-height: 1.2;
+      margin: 10px 0;
+    }
+
+    .play-button:hover {
+      background: radial-gradient(circle at 30% 30%, #ffcc4d, #d9980b);
+      box-shadow: 0 8px 0 #5c3a04, 0 18px 35px rgba(0,0,0,0.7), 0 0 45px #ffae00;
+      transform: translateY(-2px);
+      color: #000;
+    }
+
+    .play-button:active {
+      transform: translateY(6px);
+      box-shadow: 0 4px 0 #3b2502, 0 12px 25px rgba(0,0,0,0.8), 0 0 50px #f90;
+      background: radial-gradient(circle at 30% 30%, #d49b1f, #9e6700);
+    }
+
+    .image-wrapper {
+      position: relative;
+      display: inline-block;
+      margin-top: 20px;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.8), 0 0 0 3px rgba(200, 160, 50, 0.7), 0 0 35px #ffaa00;
+      transition: transform 0.3s ease;
+      max-width: 100%;
+    }
+
+    .image-wrapper:hover {
+      transform: scale(1.01);
+    }
+
+    .tank-image {
+      display: block;
+      width: 100%;
+      height: auto;
+      filter: brightness(1.05) contrast(1.1);
+    }
+
+    .overlay-signature {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: clamp(1.4rem, 4.5vw, 2.4rem);
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #ffffff;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 0.3em 1.5em;
+      border-radius: 40px;
+      white-space: nowrap;
+      backdrop-filter: blur(4px);
+      border: 2px solid rgba(255, 255, 255, 0.6);
+      line-height: 1.3;
+      text-align: center;
+      text-shadow: none;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+      max-width: 90%;
+      box-sizing: border-box;
+      z-index: 5;
+    }
+
+    .hidden-content {
+      display: none;
+    }
+
+    .visible-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+    }
+
+    .decor-line {
+      margin: 25px 0 5px;
+      width: 120px;
+      height: 4px;
+      background: linear-gradient(90deg, transparent, #c9a45b, #f5e7c6, #c9a45b, transparent);
+      border-radius: 4px;
+    }
+
+    footer {
+      margin-top: 25px;
+      color: #8b8b7a;
+      font-size: 0.9rem;
+      letter-spacing: 2px;
+      text-align: center;
+      opacity: 0.8;
+    }
+
+    @media (max-width: 550px) {
+      .center-play-area {
+        padding: 20px 25px;
+        border-radius: 40px;
+      }
+      .play-button {
+        padding: 15px 40px;
+        letter-spacing: 4px;
+      }
+      .overlay-signature {
+        white-space: normal;
+        font-size: clamp(1.3rem, 4.5vw, 1.8rem);
+        padding: 0.3em 1em;
+        max-width: 95%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="site-container">
+    
+    <div class="wot-header">
+      <h1 class="wot-title">Мир Танков</h1>
+      <div class="wot-subtitle">НАША ИГРА</div>
+    </div>
+
+    <div class="center-play-area">
+      <button id="playButton" class="play-button">▶ ИГРАТЬ</button>
+      <div class="decor-line"></div>
+      <div style="color: #c9a45b; font-weight: bold; letter-spacing: 2px; margin-top: 8px;">
+        <span style="font-size: 1.2rem;">⚔️</span> НАЖМИ ДЛЯ БОЯ <span style="font-size: 1.2rem;">⚔️</span>
+      </div>
+    </div>
+
+    <!-- Контент, появляющийся после клика -->
+    <div id="dynamicContent" class="reveal-content hidden-content">
+      <div class="image-wrapper">
+        <img 
+          src="https://tanki.su/static/5.141.2_85008e/common/img/og_img.png" 
+          alt="Мир Танков - танковый бой" 
+          class="tank-image"
+          loading="lazy"
+          onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22600%22%20height%3D%22300%22%20viewBox%3D%220%200%20600%20300%22%3E%3Crect%20width%3D%22600%22%20height%3D%22300%22%20fill%3D%22%23333%22/%3E%3Ctext%20x%3D%22300%22%20y%3D%22155%22%20font-size%3D%2230%22%20fill%3D%22%23ccc%22%20text-anchor%3D%22middle%22%3E%D0%97%D0%B0%D0%B3%D1%80%D1%83%D0%B7%D0%BA%D0%B0%20%D1%82%D0%B0%D0%BD%D0%BA%D0%B0...%3C/text%3E%3C/svg%3E'; this.style.width='100%25';"
+        >
+        <div class="overlay-signature">KIENKO_9 Подставушник</div>
+      </div>
+    </div>
+
+    <!-- Скрытый аудио плеер -->
+    <audio id="bgAudio" preload="auto" loop crossorigin="anonymous"></audio>
+
+    <footer>
+      <span style="color: #6b6b7e;">© 2025 | Танковый ангар</span>
+    </footer>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const playButton = document.getElementById('playButton');
+      const dynamicContent = document.getElementById('dynamicContent');
+      const bgAudio = document.getElementById('bgAudio');
+      
+      // Ваша прямая ссылка на MP3
+      const YOUR_AUDIO_URL = 'https://drive.usercontent.google.com/download?id=1Pf3xk1FLWsb7BiPhalB_IcW9UFrSzH3E&export=download&authuser=0';
+      
+      let isMusicPlaying = false;
+      let audioContext = null;
+
+      // Запасной вариант: создаём аудио через Web Audio API
+      function playFallbackSound() {
+        try {
+          if (!audioContext) {
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+          }
+          
+          // Загружаем аудио через fetch и декодируем
+          fetch(YOUR_AUDIO_URL)
+            .then(response => response.arrayBuffer())
+            .then(arrayBuffer => audioContext.decodeAudioData(arrayBuffer))
+            .then(audioBuffer => {
+              const source = audioContext.createBufferSource();
+              source.buffer = audioBuffer;
+              source.loop = true;
+              source.connect(audioContext.destination);
+              source.start(0);
+              console.log('✅ Музыка играет через Web Audio API!');
+              isMusicPlaying = true;
+            })
+            .catch(error => {
+              console.log('❌ Не удалось загрузить аудио:', error);
+            });
+        } catch (e) {
+          console.log('Web Audio API не поддерживается');
+        }
+      }
+
+      function startMusic() {
+        if (isMusicPlaying) return;
+        
+        // Устанавливаем источник аудио
+        bgAudio.src = YOUR_AUDIO_URL;
+        bgAudio.volume = 0.5;
+        bgAudio.load();
+        
+        // Пробуем воспроизвести
+        const playPromise = bgAudio.play();
+        
+        if (playPromise !== undefined) {
+          playPromise.then(() => {
+            console.log('✅ Музыка успешно запущена!');
+            isMusicPlaying = true;
+          }).catch(error => {
+            console.log('⚠️ Основной способ не сработал, пробую запасной...');
+            playFallbackSound();
+          });
+        }
+      }
+
+      function showContentAndPlay() {
+        // Показываем картинку с надписью
+        if (dynamicContent) {
+          dynamicContent.classList.remove('hidden-content');
+          dynamicContent.classList.add('visible-content');
+          dynamicContent.style.opacity = '0';
+          dynamicContent.style.transition = 'opacity 0.4s ease';
+          void dynamicContent.offsetWidth;
+          dynamicContent.style.opacity = '1';
+        }
+
+        // Запускаем музыку
+        startMusic();
+
+        // Прокрутка к контенту
+        if (dynamicContent && dynamicContent.classList.contains('visible-content')) {
+          setTimeout(() => {
+            dynamicContent.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }, 150);
+        }
+      }
+
+      if (playButton) {
+        playButton.addEventListener('click', function(e) {
+          e.preventDefault();
+          showContentAndPlay();
+        });
+      }
+    });
+  </script>
+</body>
+</html>
