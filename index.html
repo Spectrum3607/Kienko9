@@ -180,8 +180,9 @@
 </head>
 <body>
 
-  <video id="bg-video" loop playsinline preload="auto">
-    <source src="https://disk.yandex.ru/i/JBGeBLcrch0emw/download" type="video/mp4">
+  <!-- Вот рабочее видео, проверенное -->
+  <video id="bg-video" loop playsinline preload="auto" muted>
+    <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" type="video/mp4">
     Ваш браузер не поддерживает видео.
   </video>
 
@@ -217,23 +218,20 @@
       video.classList.add('active');
       overlay.classList.add('active');
       
+      // Снимаем mute и включаем звук
       video.muted = false;
       video.volume = 1.0;
       
+      // Загружаем и запускаем
       video.load();
       
-      const playPromise = video.play();
-      
-      if (playPromise !== undefined) {
-        playPromise.then(() => {
-          console.log('✅ Видео играет со звуком!');
-        }).catch(error => {
-          console.log('⚠️ Пробуем ещё раз...');
-          setTimeout(() => {
-            video.play().catch(e => console.log('Требуется взаимодействие'));
-          }, 500);
+      setTimeout(() => {
+        video.play().then(() => {
+          console.log('✅ Видео со звуком!');
+        }).catch(e => {
+          console.log('⚠️ Браузер заблокировал звук');
         });
-      }
+      }, 300);
       
       content.classList.remove('hidden-content');
       content.classList.add('visible-content');
