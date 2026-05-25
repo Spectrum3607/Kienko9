@@ -5,11 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Мир Танков · KIENKO_9</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
       font-family: 'Segoe UI', 'Arial', sans-serif;
@@ -36,9 +32,7 @@
       display: none;
     }
 
-    #bg-video.active {
-      display: block;
-    }
+    #bg-video.active { display: block; }
 
     .overlay-dark {
       position: fixed;
@@ -51,9 +45,7 @@
       display: none;
     }
 
-    .overlay-dark.active {
-      display: block;
-    }
+    .overlay-dark.active { display: block; }
 
     .site-container {
       position: relative;
@@ -149,10 +141,7 @@
       white-space: nowrap;
     }
 
-    .hidden-content {
-      display: none;
-    }
-
+    .hidden-content { display: none; }
     .visible-content {
       display: flex;
       flex-direction: column;
@@ -166,10 +155,7 @@
     }
 
     @media (max-width: 550px) {
-      .play-button {
-        padding: 15px 40px;
-        letter-spacing: 4px;
-      }
+      .play-button { padding: 15px 40px; letter-spacing: 4px; }
       .overlay-signature {
         white-space: normal;
         font-size: clamp(1.3rem, 4.5vw, 1.8rem);
@@ -180,16 +166,13 @@
 </head>
 <body>
 
-  <!-- Вот рабочее видео, проверенное -->
-  <video id="bg-video" loop playsinline preload="auto" muted>
-    <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" type="video/mp4">
-    Ваш браузер не поддерживает видео.
+  <video id="bg-video" loop playsinline>
+    <source src="https://tmpfiles.org/dl/wgwUwEdWHz4J/videoplayback.mp4" type="video/mp4">
   </video>
 
   <div id="overlay-dark" class="overlay-dark"></div>
 
   <div class="site-container">
-    
     <h1 class="wot-title">Мир Танков</h1>
     <div class="wot-subtitle">НАША ИГРА</div>
 
@@ -197,11 +180,7 @@
 
     <div id="dynamicContent" class="hidden-content">
       <div class="image-wrapper">
-        <img 
-          src="https://tanki.su/static/5.141.2_85008e/common/img/og_img.png" 
-          alt="Мир Танков" 
-          class="tank-image"
-        >
+        <img src="https://tanki.su/static/5.141.2_85008e/common/img/og_img.png" alt="Мир Танков" class="tank-image">
         <div class="overlay-signature">KIENKO_9 Подставушник</div>
       </div>
     </div>
@@ -218,20 +197,15 @@
       video.classList.add('active');
       overlay.classList.add('active');
       
-      // Снимаем mute и включаем звук
       video.muted = false;
       video.volume = 1.0;
       
-      // Загружаем и запускаем
-      video.load();
-      
-      setTimeout(() => {
-        video.play().then(() => {
-          console.log('✅ Видео со звуком!');
-        }).catch(e => {
-          console.log('⚠️ Браузер заблокировал звук');
-        });
-      }, 300);
+      video.play().then(() => {
+        console.log('✅ Заработало! Видео со звуком!');
+      }).catch(e => {
+        console.log('Повторная попытка...');
+        setTimeout(() => video.play(), 300);
+      });
       
       content.classList.remove('hidden-content');
       content.classList.add('visible-content');
